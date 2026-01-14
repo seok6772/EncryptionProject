@@ -1,10 +1,11 @@
-from oracledb.thin_impl import encrypt_cbc
+
+# a b c d e f ... x y z
+# d e f g h i ... a b c
 
 def caesar_cipher(text, shift, left=True):
     cipher_text = ''
 
     if not left:
-
         shift = -shift
 
     for char in text:
@@ -18,29 +19,37 @@ def caesar_cipher(text, shift, left=True):
     return cipher_text
 
 
-
 if __name__ == '__main__':
     text = 'hello, world'
 
-    # encrypted = caesar_cipher(text, 3, True)
-    encrypted = caesar_cipher(text, 3)                     # 암호화
+    #encrypted = caesar_cipher(text, 3, True)
+    encrypted = caesar_cipher(text, 3)                  # 암호화
     print(encrypted)
-    decrypted = caesar_cipher(encrypted, 3, False)     # 복호화
+    decrypted = caesar_cipher(encrypted, 3, False)  # 복호화
     print(decrypted)
 
-    encrypted = caesar_cipher(text, 3, False)         # 암호화
+    encrypted = caesar_cipher(text, 3, False)       # 암호화
     print(encrypted)
-    decrypted = caesar_cipher(encrypted, 3)                # 복호화
+    decrypted = caesar_cipher(encrypted, 3)             # 복호화
     print(decrypted)
 
+
+    # ---------
     text = 'HELLO, WORLD'
 
     encrypted = caesar_cipher(text, 3)
     print(encrypted)
 
-    decrypted =caesar_cipher(encrypted, 3 ,False)
+    decrypted = caesar_cipher(encrypted, 3, False)
     print(decrypted)
 
-    text = 'HELLO, WORLD'
-    encrypted =caesar_cipher(text, 3)
+
+    # ---------
+    text = 'Hello, World'
+    encrypted = caesar_cipher(text, 3)
     print(encrypted)
+
+    decrypted = caesar_cipher(encrypted, 3, False)
+    print(decrypted)
+
+
