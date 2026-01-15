@@ -176,11 +176,8 @@ async def join_form(request: Request):
 # 회원정보를 입력하고 POST 요청하면 데이터베이스에 회원정보를 저장함
 @app.post("/join", response_class=HTMLResponse)
 async def joinok(
-        request: Request,
-        username: str = Form(...),
-        password: str = Form(...),
-        name: str = Form(""),
-        email: str = Form("")):
+        request: Request,username: str = Form(...),
+        password: str = Form(...),name: str = Form(""),email: str = Form("") ):
 
     try:
         async with aiosqlite.connect(MemberDB_NAME) as db:
@@ -227,7 +224,7 @@ async def member_list(request: Request):
 
 # 요청이 들어오면 로그인 폼을 보여줌
 @app.get("/login", response_class=HTMLResponse)
-def login_form(request: Request):
+async def login_form(request: Request):
     return templates.TemplateResponse("login.html", {"request": request})
 
 
