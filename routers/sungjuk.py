@@ -7,6 +7,7 @@ import aiosqlite
 
 router = APIRouter(prefix="/sungjuk", tags=["sungjuk"])
 
+
 @router.get("/list", response_class=HTMLResponse)
 async def sungjuk_list(request: Request):
     async with aiosqlite.connect(SungJukDB_NAME) as db:
@@ -31,9 +32,11 @@ async def sungjuk_list(request: Request):
         "sungjuks": sungjuks
     })
 
+
 @router.get("/new", response_class=HTMLResponse)
 async def sungjuk_newform(request: Request):
     return templates.TemplateResponse("sungjuk/sungjuk_new.html", {"request": request})
+
 
 @router.post("/new", response_class=HTMLResponse)
 async def sungjuk_new(request: Request, name: str = Form(...),
@@ -47,6 +50,7 @@ async def sungjuk_new(request: Request, name: str = Form(...),
         await db.commit()
 
     return RedirectResponse(url="/sungjuk/list", status_code=303)
+
 
 @router.get("/{sjno}", response_class=HTMLResponse)
 async def sungjuk_detail(request: Request, sjno: int):
@@ -75,13 +79,21 @@ async def sungjuk_detail(request: Request, sjno: int):
         "sj": sungjuk
     })
 
-@router.get("/{sjno}/delete", response_class=HTMLResponse)
+# @router.get 으로 설정하는 경우, 405 Method not allow 오류 발생!!
+@router.post("/{sjno}/delete", response_class=HTMLResponse)
 async def sungjuk_delete(sjno: int):
-    pass
+    async with aiosqlite.connect(SungJukDB_NAME) as db:
+        await db.execute("DELETE FROM sungjuk WHERE sjno = ?", (sjno,))
+        await db.commit()
+
+    # 게시글 삭제 후 게시판 목록으로 전환
+    return RedirectResponse(url="/sungjuk/list", status_code=303)
+
 
 @router.get("/{sjno}/edit", response_class=HTMLResponse)
 async def sungjuk_editform(request: Request, sjno: int):
     pass
+
 
 @router.post("/{sjno}/edit", response_class=HTMLResponse)
 async def sungjuk_edit(request: Request, sjno: int,
